@@ -1,7 +1,7 @@
 export default function Home() {
   return (
     <main className="min-h-screen p-8 flex flex-col items-center justify-center">
-      <h1 className="font-brand text-5xl font-bold text-amber-900">
+      <h1 className="font-brand text-5xl font-bold text-[#b33730]">
         Chez Hayet Bakery
       </h1>
       <p> </p>

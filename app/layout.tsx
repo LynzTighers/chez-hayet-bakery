@@ -24,16 +24,16 @@ export default function RootLayout({
       <body
         className={`${grapeNuts.variable} antialiased bg-white text-amber-900`}
       >
-        <nav className="bg-[#ffe2d0] text-[#b33730] px-8 py-6">
+        <nav className="bg-[#f4e5e2] text-[#b33730] px-6 py-4">
           <div className="max-w-7xl mx-auto flex items-center justify-between">
             {/* Logo */}
             <a href="/" className="flex items-center">
               <Image
-                src="/logo.png"
+                src="/banner.png"
                 alt="Chez Hayet logo"
                 width={80}
                 height={80}
-                className="h-10 w-auto"
+                className="h-12 w-auto"
                 priority
               />
             </a>
