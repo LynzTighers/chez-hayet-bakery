@@ -47,7 +47,7 @@ export default function Home() {
             <span
               className={`${headingFont.className} text-2xl font-bold tracking-wide`}
             >
-              Your Bakery
+              Chez Hayet Bakery
             </span>
 
             <span className="mt-1 text-[9px] uppercase tracking-[0.35em] text-[#986c62]">
@@ -137,7 +137,7 @@ export default function Home() {
 
             <div className="relative h-[420px] w-full max-w-[520px] overflow-hidden rounded-[3rem] sm:h-[500px]">
               <Image
-                src="/images/hero-cake.jpg"
+                src="/images/hero-pic.jpg"
                 alt="Freshly baked cake"
                 fill
                 priority
