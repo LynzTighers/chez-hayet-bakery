@@ -40,58 +40,6 @@ export default function Home() {
     <main
       className={`${bodyFont.className} min-h-screen bg-[#fff8f1] text-[#3f2a26]`}
     >
-      {/* NAVBAR */}
-      <header className="sticky top-0 z-50 border-b border-[#eadbd3] bg-[#fff8f1]/95 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-10">
-          <Link href="/" className="flex flex-col leading-none">
-            <span
-              className={`${headingFont.className} text-2xl font-bold tracking-wide`}
-            >
-              Chez Hayet Bakery
-            </span>
-
-            <span className="mt-1 text-[9px] uppercase tracking-[0.35em] text-[#986c62]">
-              Handmade with love
-            </span>
-          </Link>
-
-          <nav className="hidden items-center gap-8 text-sm md:flex">
-            <Link
-              href="/"
-              className="border-b border-[#9b645d] pb-1 transition hover:text-[#9b645d]"
-            >
-              Home
-            </Link>
-
-            <Link href="/about" className="transition hover:text-[#9b645d]">
-              About
-            </Link>
-
-            <Link href="/order" className="transition hover:text-[#9b645d]">
-              Order
-            </Link>
-
-            <Link
-              href="/where-to-buy"
-              className="transition hover:text-[#9b645d]"
-            >
-              Where to Buy
-            </Link>
-
-            <Link href="/contact" className="transition hover:text-[#9b645d]">
-              Contact
-            </Link>
-          </nav>
-
-          <Link
-            href="/order"
-            className="rounded-full bg-[#9b645d] px-5 py-2.5 text-sm font-medium text-white transition hover:bg-[#814f49]"
-          >
-            Order Now
-          </Link>
-        </div>
-      </header>
-
       {/* HERO */}
       <section className="relative overflow-hidden bg-[#bd908a]">
         <div className="mx-auto grid min-h-[620px] max-w-7xl items-center gap-10 px-6 py-16 lg:grid-cols-2 lg:px-10">
@@ -117,7 +65,7 @@ export default function Home() {
 
             <div className="mt-8 flex flex-wrap gap-4">
               <Link
-                href="/order"
+                href="/menu"
                 className="rounded-full bg-[#5c352f] px-6 py-3 text-sm font-medium text-white transition hover:bg-[#462722]"
               >
                 Explore Our Menu
@@ -289,52 +237,6 @@ export default function Home() {
           </Link>
         </div>
       </section>
-
-      {/* FOOTER */}
-      <footer className="bg-[#ad7b76] text-[#fff8f1]">
-        <div className="mx-auto grid max-w-7xl gap-10 px-6 py-12 sm:grid-cols-2 lg:grid-cols-4 lg:px-10">
-          <div>
-            <h3 className={`${headingFont.className} text-3xl font-semibold`}>
-              Your Bakery
-            </h3>
-
-            <p className="mt-3 max-w-xs text-sm leading-6 text-[#f2dfda]">
-              Cakes, sweets, and custom treats made for life's sweetest moments.
-            </p>
-          </div>
-
-          <FooterColumn
-            title="Quick Links"
-            links={[
-              ["Home", "/"],
-              ["About", "/about"],
-              ["Order", "/order"],
-            ]}
-          />
-
-          <FooterColumn
-            title="Visit"
-            links={[
-              ["Where to Buy", "/where-to-buy"],
-              ["Contact", "/contact"],
-            ]}
-          />
-
-          <div>
-            <h4 className="font-medium">Get in Touch</h4>
-
-            <p className="mt-4 text-sm leading-6 text-[#f2dfda]">
-              Questions about an order?
-              <br />
-              Send us a message anytime.
-            </p>
-          </div>
-        </div>
-
-        <div className="border-t border-white/20 py-5 text-center text-xs text-[#f2dfda]">
-          © {new Date().getFullYear()} Your Bakery. All rights reserved.
-        </div>
-      </footer>
     </main>
   );
 }
@@ -360,28 +262,6 @@ function Value({
         </h3>
 
         <p className="mt-1 text-sm leading-6 text-[#70514b]">{text}</p>
-      </div>
-    </div>
-  );
-}
-
-function FooterColumn({
-  title,
-  links,
-}: {
-  title: string;
-  links: [string, string][];
-}) {
-  return (
-    <div>
-      <h4 className="font-medium">{title}</h4>
-
-      <div className="mt-4 flex flex-col gap-3 text-sm text-[#f2dfda]">
-        {links.map(([label, href]) => (
-          <Link key={href} href={href} className="transition hover:text-white">
-            {label}
-          </Link>
-        ))}
       </div>
     </div>
   );
