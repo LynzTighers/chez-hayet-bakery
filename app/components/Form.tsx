@@ -1,6 +1,6 @@
 "use client";
-import Form from "next/form";
+import form from "next/form";
 
-export default function Navbar() {
-  return <Form></Form>;
+export default function OrderForm() {
+  return <OrderForm></OrderForm>;
 }
