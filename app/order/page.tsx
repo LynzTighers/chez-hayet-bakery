@@ -1,8 +1,12 @@
-export default function contact() {
+import OrderForm from "../components/Form";
+
+export default function about() {
   return (
     <html lang="en">
       <body>
-        <main></main>
+        <main>
+          <OrderForm />
+        </main>
       </body>
     </html>
   );
