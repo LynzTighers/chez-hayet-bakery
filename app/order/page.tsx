@@ -1,13 +1,10 @@
 import OrderForm from "../components/Form";
 
-export default function about() {
+// <html> and <body> come from app/layout.tsx; pages only render their own content.
+export default function OrderPage() {
   return (
-    <html lang="en">
-      <body>
-        <main>
-          <OrderForm />
-        </main>
-      </body>
-    </html>
+    <main className="min-h-[70vh] px-6 py-12">
+      <OrderForm />
+    </main>
   );
 }

@@ -1,124 +1,152 @@
 "use client";
 import { useState } from "react";
+import { submitForm, type FieldErrors } from "../lib/api";
+import {
+  FormField,
+  FormStatus,
+  SubmitButton,
+  ThankYou,
+  borderClass,
+  inputClass,
+} from "./FormField";
 
 export default function OrderForm() {
-  //const [category, setCategory] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [done, setDone] = useState(false);
+  const [message, setMessage] = useState<string>();
+  const [errors, setErrors] = useState<FieldErrors>({});
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setSubmitting(true);
+    setMessage(undefined);
+
+    const result = await submitForm("/api/orders", event.currentTarget);
+
+    setSubmitting(false);
+    if (result.ok) {
+      setDone(true);
+      return;
+    }
+    setMessage(result.message);
+    setErrors(result.fieldErrors ?? {});
+  }
+
+  if (done) {
+    return (
+      <ThankYou title="Thank you for your order!">
+        We&apos;ve received your request and will call you soon to confirm the
+        details.
+      </ThankYou>
+    );
+  }
+
   return (
-    <form className="mx-auto max-w-2xl space-y-6 rounded-3xl bg-[#fffaf6] p-8 shadow-sm">
-      <div>
-        <label
-          htmlFor="firstName"
-          className="mb-2 block text-sm font-medium text-[#5e3934]"
-        >
-          First Name
-        </label>
+    <form
+      onSubmit={handleSubmit}
+      noValidate
+      className="mx-auto max-w-2xl space-y-6 rounded-3xl bg-[#fffaf6] p-8 shadow-sm"
+    >
+      <div className="grid gap-6 sm:grid-cols-2">
+        <FormField id="firstName" label="First Name" error={errors.firstName}>
+          <input
+            type="text"
+            id="firstName"
+            name="firstName"
+            autoComplete="given-name"
+            placeholder="Enter your first name"
+            className={`${inputClass} ${borderClass(errors.firstName)}`}
+          />
+        </FormField>
 
-        <input
-          type="text"
-          id="firstName"
-          name="firstName"
-          placeholder="Enter your first name"
-          className="w-full rounded-xl border border-[#e8d5cc] bg-white px-4 py-3 text-[#3f2a26] outline-none transition focus:border-[#9b645d]"
-        />
+        <FormField id="lastName" label="Last Name" error={errors.lastName}>
+          <input
+            type="text"
+            id="lastName"
+            name="lastName"
+            autoComplete="family-name"
+            placeholder="Enter your last name"
+            className={`${inputClass} ${borderClass(errors.lastName)}`}
+          />
+        </FormField>
       </div>
 
-      <div>
-        <label
-          htmlFor="lastName"
-          className="mb-2 block text-sm font-medium text-[#5e3934]"
-        >
-          Last Name
-        </label>
+      <div className="grid gap-6 sm:grid-cols-2">
+        <FormField id="phone" label="Phone Number" error={errors.phone}>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            autoComplete="tel"
+            placeholder="(614) 555-0123"
+            className={`${inputClass} ${borderClass(errors.phone)}`}
+          />
+        </FormField>
 
-        <input
-          type="text"
-          id="lastName"
-          name="lastName"
-          placeholder="Enter your last name"
-          className="w-full rounded-xl border border-[#e8d5cc] bg-white px-4 py-3 text-[#3f2a26] outline-none transition focus:border-[#9b645d]"
-        />
+        <FormField id="email" label="Email" error={errors.email}>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            autoComplete="email"
+            placeholder="you@example.com"
+            className={`${inputClass} ${borderClass(errors.email)}`}
+          />
+        </FormField>
       </div>
 
-      <div>
-        <label
-          htmlFor="phone"
-          className="mb-2 block text-sm font-medium text-[#5e3934]"
-        >
-          Phone Number
-        </label>
-
-        <input
-          type="tel"
-          id="phone"
-          name="phone"
-          placeholder="Enter your phone number"
-          className="w-full rounded-xl border border-[#e8d5cc] bg-white px-4 py-3 text-[#3f2a26] outline-none transition focus:border-[#9b645d]"
-        />
-      </div>
-
-      <div>
-        <label
-          htmlFor="category"
-          className="mb-2 block text-sm font-medium text-[#5e3934]"
-        >
-          Category
-        </label>
-
+      <FormField id="category" label="Category" error={errors.category}>
         <select
           id="category"
           name="category"
-          className="w-full rounded-xl border border-[#e8d5cc] bg-white px-4 py-3 text-[#3f2a26] outline-none transition focus:border-[#9b645d]"
+          className={`${inputClass} ${borderClass(errors.category)}`}
         >
           <option value="">Choose a category</option>
           <option value="cakes">Celebration Cakes</option>
           <option value="algerian-sweets">Tarts and Pastries</option>
           <option value="custom">Custom Creation</option>
         </select>
-      </div>
+      </FormField>
 
-      <div>
-        <label
-          htmlFor="product"
-          className="mb-2 block text-sm font-medium text-[#5e3934]"
-        >
-          Product
-        </label>
-
+      <FormField id="product" label="Product" optional error={errors.product}>
         <select
           id="product"
           name="product"
-          className="w-full rounded-xl border border-[#e8d5cc] bg-white px-4 py-3 text-[#3f2a26] outline-none transition focus:border-[#9b645d]"
+          className={`${inputClass} ${borderClass(errors.product)}`}
         >
           <option value="">Choose a product</option>
           <option value="product-1">Product 1</option>
           <option value="product-2">Product 2</option>
           <option value="product-3">Product 3</option>
         </select>
-      </div>
+      </FormField>
 
-      <div>
-        <label
-          htmlFor="notes"
-          className="mb-2 block text-sm font-medium text-[#5e3934]"
-        >
-          Order Details
-        </label>
+      <FormField id="pickupDate" label="Pickup Date" error={errors.pickupDate}>
+        <input
+          type="date"
+          id="pickupDate"
+          name="pickupDate"
+          // Grey out past days in the picker. Set in the browser, not during
+          // server rendering, so it uses the customer's own "today".
+          onFocus={(event) => {
+            event.currentTarget.min = new Date().toLocaleDateString("en-CA");
+          }}
+          className={`${inputClass} ${borderClass(errors.pickupDate)}`}
+        />
+      </FormField>
 
+      <FormField id="details" label="Order Details" error={errors.details}>
         <textarea
-          id="notes"
-          name="notes"
+          id="details"
+          name="details"
           rows={5}
           placeholder="Tell us what you would like..."
-          className="w-full resize-none rounded-xl border border-[#e8d5cc] bg-white px-4 py-3 text-[#3f2a26] outline-none transition focus:border-[#9b645d]"
+          className={`${inputClass} ${borderClass(errors.details)} resize-none`}
         />
-      </div>
+      </FormField>
 
-      <button
-        type="submit"
-        className="w-full rounded-full bg-[#9b645d] px-6 py-3 font-medium text-white transition hover:bg-[#814f49]"
-      >
-        Submit Order
-      </button>
+      <FormStatus message={message} />
+      <SubmitButton submitting={submitting} label="Submit Order" />
     </form>
   );
 }
