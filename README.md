@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🧁 Chez Hayet Bakery
 
-## Getting Started
+A full-stack website for Chez Hayet, a home bakery making cakes, traditional Algerian sweets, cookies and custom creations. Customers browse the menu and send orders or messages; the baker logs in to a private dashboard to manage orders and reply to messages by email.
 
-First, run the development server:
+**Live site:** [chezhayetoh.com](https://www.chezhayetoh.com) · **API repo:** [chez-hayet-bakery-api](https://github.com/LynzTighers/chez-hayet-bakery-api)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=nextdotjs&logoColor=white) ![React](https://img.shields.io/badge/React-20232A?style=flat-square&logo=react&logoColor=61DAFB) ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white) ![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white) ![Express](https://img.shields.io/badge/Express-000000?style=flat-square&logo=express&logoColor=white) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white) ![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white) ![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white)
+
+## Features
+
+**For customers**
+- Pages for the home, menu, about, where to buy, follow us and contact
+- An order form (category, product, details and pickup date) and a contact form
+- The API checks each form with zod, and any problems show up next to the field they belong to
+
+**For the baker** (`/admin`)
+- Username and password login
+- Orders dashboard: see every order and move it through `new → confirmed → completed` (or `cancelled`)
+- Messages dashboard: read contact messages and reply; the reply is emailed to the customer
+
+## How it works
+
+```mermaid
+flowchart LR
+  subgraph Browser
+    Site["Next.js site<br/>(this repo)"]
+  end
+  Site -- "/api/* (Next.js rewrite)" --> API["Express API<br/>(chez-hayet-bakery-api)"]
+  API --> DB[("Postgres<br/>Neon in production")]
+  API --> Mail["SMTP<br/>(Nodemailer)"]
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- The browser only ever talks to this site. `next.config.ts` forwards `/api/*` to the Express API, so the login cookie stays on one domain and no CORS setup is needed.
+- The API validates every request with zod and stores orders, messages and replies in Postgres (Drizzle ORM).
+- **Baker login:** passwords are hashed with bcrypt. A successful login sets an `httpOnly`, `sameSite=lax` session cookie whose hash is stored in the database, and repeated wrong passwords lock the username for 15 minutes.
+- Contact replies are sent with Nodemailer. In Docker they go to Mailpit, a local test inbox, so no real emails are sent.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+app/
+  page.tsx, menu/, about/, where-to-buy/, follow-us/, contact/, order/   public pages
+  admin/            login page and the orders/messages dashboard
+  components/       navbar, forms, decorative pieces
+  lib/              API helpers and shared types
+next.config.ts      /api proxy to the Express API
+```
 
-## Learn More
+## Running locally
 
-To learn more about Next.js, take a look at the following resources:
+You need Node.js and the [API](https://github.com/LynzTighers/chez-hayet-bakery-api) running on port 4000 (its `docker compose up --build` starts the API, Postgres and Mailpit together).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm install
+npm run dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Then open http://localhost:3000. The site sends API calls to `http://localhost:4000` by default. Set `API_URL` to point it somewhere else, as the Vercel deployment does.
