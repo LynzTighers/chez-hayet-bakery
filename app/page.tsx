@@ -1,241 +1,186 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Cormorant_Garamond, Inter } from "next/font/google";
-
-const headingFont = Cormorant_Garamond({
-  subsets: ["latin"],
-  weight: ["500", "600", "700"],
-});
-
-const bodyFont = Inter({
-  subsets: ["latin"],
-});
-
-const categories = [
-  {
-    title: "Celebration Cakes",
-    description:
-      "Beautiful cakes made for birthdays, gatherings, and special moments.",
-    image: "/images/cake.jpg",
-    background: "bg-[#efc8c6]",
-  },
-  {
-    title: "Algerian Sweets",
-    description:
-      "Traditional handmade sweets inspired by Algerian flavors and recipes.",
-    image: "/images/algerian-sweets.jpg",
-    background: "bg-[#ead8c6]",
-  },
-  {
-    title: "Custom Creations",
-    description:
-      "Have something special in mind? Tell us what you're imagining.",
-    image: "/images/custom-cake.jpg",
-    background: "bg-[#d9c3ce]",
-  },
-];
+import { BlobPhoto, Sprinkles, Wave } from "./components/Decor";
+import Reveal from "./components/Reveal";
+import { categories } from "./lib/categories";
 
 export default function Home() {
   return (
-    <main
-      className={`${bodyFont.className} min-h-screen bg-[#fff8f1] text-[#3f2a26]`}
-    >
+    <main className="min-h-screen overflow-x-hidden">
       {/* HERO */}
-      <section className="relative overflow-hidden bg-[#bd908a]">
-        <div className="mx-auto grid min-h-[620px] max-w-7xl items-center gap-10 px-6 py-16 lg:grid-cols-2 lg:px-10">
-          <div className="relative z-10 max-w-xl text-[#fff9f4]">
-            <p className="mb-4 text-xs font-medium uppercase tracking-[0.3em] text-[#f6ddd5]">
+      <section className="relative bg-blush text-cocoa">
+        <Sprinkles />
+        <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-6 pb-10 pt-14 lg:grid-cols-[1.1fr_1fr] lg:px-10 lg:pt-20">
+          <Reveal className="relative z-10 max-w-xl">
+            <p className="mb-5 inline-flex items-center gap-2 rounded-full bg-cream/70 px-4 py-2 text-xs font-medium uppercase tracking-[0.25em] text-rose-deep">
+              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-rose-deep" />
               Freshly baked • Made to order
             </p>
 
-            <h1
-              className={`${headingFont.className} text-6xl font-semibold leading-[0.95] sm:text-7xl lg:text-8xl`}
-            >
-              Life is better
-              <br />
-              with something
-              <br />
-              sweet.
+            <h1 className="font-display text-6xl font-semibold leading-[0.95] tracking-tight sm:text-7xl lg:text-8xl">
+              Life is better with something{" "}
+              <span className="relative inline-block font-script text-7xl font-normal text-rose-deep sm:text-8xl lg:text-9xl">
+                sweet.
+              </span>
             </h1>
 
-            <p className="mt-7 max-w-md text-sm leading-7 text-[#fff1ec] sm:text-base">
-              Homemade cakes, traditional Algerian sweets, cookies, and custom
-              creations made carefully for every celebration.
+            <p className="mt-7 max-w-md leading-7 text-latte sm:text-lg">
+              Homemade cakes, traditional Algerian sweets, cookies, and custom creations made
+              carefully for every celebration.
             </p>
 
-            <div className="mt-8 flex flex-wrap gap-4">
+            <div className="mt-9 flex flex-wrap gap-4">
               <Link
                 href="/menu"
-                className="rounded-full bg-[#5c352f] px-6 py-3 text-sm font-medium text-white transition hover:bg-[#462722]"
+                className="group inline-flex items-center gap-3 rounded-full bg-cocoa px-7 py-3.5 text-sm font-medium text-cream shadow-lg shadow-cocoa/20 transition hover:-translate-y-0.5 hover:bg-cocoa-deep"
               >
                 Explore Our Menu
+                <span className="transition group-hover:translate-x-1">→</span>
               </Link>
 
               <Link
                 href="/about"
-                className="rounded-full border border-[#f6ddd5] px-6 py-3 text-sm font-medium transition hover:bg-[#fff8f1] hover:text-[#5c352f]"
+                className="rounded-full border-2 border-cocoa/20 px-7 py-3.5 text-sm font-medium transition hover:-translate-y-0.5 hover:border-cocoa hover:bg-cream"
               >
                 Our Story
               </Link>
             </div>
-          </div>
+          </Reveal>
 
-          <div className="relative flex justify-center lg:justify-end">
-            <div className="absolute h-[420px] w-[420px] rounded-full bg-[#d8aaa2]/60 blur-3xl" />
-
-            <div className="relative h-[420px] w-full max-w-[520px] overflow-hidden rounded-[3rem] sm:h-[500px]">
-              <Image
-                src="/images/hero-pic.jpg"
-                alt="Freshly baked cake"
-                fill
-                priority
-                className="object-cover"
-              />
+          <Reveal delay={150} className="relative mx-auto w-full max-w-[480px]">
+            <BlobPhoto src="/images/hero-pic.jpg" alt="Freshly baked cake" backdrop="bg-peach" priority />
+            {/* Little label that floats over the photo */}
+            <div className="absolute -bottom-2 left-0 animate-float-slow rounded-2xl bg-cream px-5 py-3 shadow-xl shadow-cocoa/10 sm:-left-6">
+              <p className="font-script text-3xl leading-none text-rose-deep">Handmade</p>
+              <p className="mt-1 text-xs uppercase tracking-[0.2em] text-latte">in Columbus, OH</p>
             </div>
-          </div>
+          </Reveal>
         </div>
+        <Wave className="text-cream" />
       </section>
 
       {/* VALUE PROPS */}
       <section className="mx-auto grid max-w-7xl gap-8 px-6 py-12 sm:grid-cols-3 lg:px-10">
-        <Value
-          number="01"
-          title="Freshly Baked"
-          text="Made fresh with care for every order."
-        />
-
+        <Value number="01" title="Freshly Baked" text="Made fresh with care for every order." delay={0} />
         <Value
           number="02"
           title="Quality Ingredients"
           text="Simple ingredients chosen for flavor and quality."
+          delay={120}
         />
-
         <Value
           number="03"
           title="Made for You"
           text="Personalized creations for your special moments."
+          delay={240}
         />
       </section>
 
       {/* CATEGORIES */}
-      <section className="mx-auto max-w-7xl px-6 pb-20 pt-8 lg:px-10">
-        <div className="mb-10 text-center">
-          <p className="mb-2 text-xs uppercase tracking-[0.3em] text-[#a3776c]">
+      <section className="mx-auto max-w-7xl px-6 pb-24 pt-8 lg:px-10">
+        <Reveal className="mb-12 text-center">
+          <p className="mb-2 text-xs uppercase tracking-[0.3em] text-rose-deep">
             Something for everyone
           </p>
-
-          <h2
-            className={`${headingFont.className} text-4xl font-semibold sm:text-5xl`}
-          >
-            Find Your Favorite
+          <h2 className="font-display text-4xl font-semibold text-cocoa sm:text-5xl">
+            Find Your <span className="font-script text-5xl font-normal text-rose-deep sm:text-6xl">Favorite</span>
           </h2>
-        </div>
+        </Reveal>
 
-        <div className="grid gap-6 md:grid-cols-3">
-          {categories.map((category) => (
-            <article
-              key={category.title}
-              className={`${category.background} group overflow-hidden rounded-[2rem] p-5`}
-            >
-              <div className="relative h-[280px] overflow-hidden rounded-[1.5rem]">
-                <Image
-                  src={category.image}
-                  alt={category.title}
-                  fill
-                  className="object-cover transition duration-500 group-hover:scale-105"
-                />
-              </div>
+        <div className="grid gap-8 md:grid-cols-3">
+          {categories.map((category, index) => (
+            <Reveal key={category.title} delay={index * 120}>
+              <Link
+                href="/order"
+                className={`${category.background} group block h-full rounded-[2rem] p-5 transition duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-cocoa/15`}
+              >
+                {/* Arched photo, like a pâtisserie window */}
+                <div className="relative h-[300px] overflow-hidden rounded-t-full rounded-b-[1.5rem]">
+                  <Image
+                    src={category.image}
+                    alt={category.title}
+                    fill
+                    sizes="(min-width: 768px) 30vw, 90vw"
+                    className="object-cover transition duration-700 group-hover:scale-110"
+                  />
+                </div>
 
-              <div className="px-2 pb-2 pt-6">
-                <h3
-                  className={`${headingFont.className} text-3xl font-semibold`}
-                >
-                  {category.title}
-                </h3>
-
-                <p className="mt-3 min-h-[72px] text-sm leading-6 text-[#654943]">
-                  {category.description}
-                </p>
-
-                <Link
-                  href="/order"
-                  className="mt-5 inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#fff8f1] text-xl transition group-hover:translate-x-1"
-                  aria-label={`Order ${category.title}`}
-                >
-                  →
-                </Link>
-              </div>
-            </article>
+                <div className="px-2 pb-2 pt-6">
+                  <h3 className="font-display text-3xl font-semibold text-cocoa">{category.title}</h3>
+                  <p className="mt-3 min-h-[72px] text-sm leading-6 text-latte">{category.description}</p>
+                  <span className="mt-5 inline-flex items-center gap-2 rounded-full bg-cream px-5 py-2.5 text-sm font-medium text-cocoa transition group-hover:bg-cocoa group-hover:text-cream">
+                    Order this
+                    <span className="transition group-hover:translate-x-1">→</span>
+                  </span>
+                </div>
+              </Link>
+            </Reveal>
           ))}
         </div>
       </section>
 
       {/* ABOUT */}
-      <section className="bg-[#f2dfd5]">
-        <div className="mx-auto grid max-w-7xl items-center gap-12 px-6 py-20 lg:grid-cols-2 lg:px-10">
-          <div className="relative min-h-[420px] overflow-hidden rounded-[3rem]">
-            <Image
-              src="/images/bakery-about.jpg"
-              alt="Handmade bakery desserts"
-              fill
-              className="object-cover"
-            />
-          </div>
+      <section className="relative">
+        <Wave className="text-mauve/60" flip />
+        <div className="bg-mauve/60">
+          <div className="mx-auto grid max-w-7xl items-center gap-16 px-6 py-16 lg:grid-cols-2 lg:px-10">
+            <Reveal className="mx-auto w-full max-w-[460px]">
+              <BlobPhoto src="/images/bakery-about.jpg" alt="Handmade bakery desserts" backdrop="bg-petal" />
+            </Reveal>
 
-          <div className="max-w-xl">
-            <p className="mb-3 text-xs uppercase tracking-[0.3em] text-[#9b645d]">
-              Made with care
-            </p>
-
-            <h2
-              className={`${headingFont.className} text-5xl font-semibold leading-none sm:text-6xl`}
-            >
-              A little sweetness
-              <br />
-              for every occasion.
-            </h2>
-
-            <p className="mt-6 leading-7 text-[#654943]">
-              From familiar favorites to traditional Algerian desserts, every
-              order is prepared with attention to flavor, presentation, and the
-              people it is being made for.
-            </p>
-
-            <Link
-              href="/about"
-              className="mt-8 inline-block rounded-full bg-[#9b645d] px-6 py-3 text-sm text-white transition hover:bg-[#814f49]"
-            >
-              Meet the Baker
-            </Link>
+            <Reveal delay={150} className="max-w-xl">
+              <p className="mb-3 text-xs uppercase tracking-[0.3em] text-rose-deep">Made with care</p>
+              <h2 className="font-display text-5xl font-semibold leading-none text-cocoa sm:text-6xl">
+                A little sweetness for every{" "}
+                <span className="font-script font-normal text-rose-deep">occasion.</span>
+              </h2>
+              <p className="mt-6 leading-7 text-latte">
+                From familiar favorites to traditional Algerian/French desserts, every order is
+                prepared with attention to flavor, presentation, and the people it is being made
+                for.
+              </p>
+              <Link
+                href="/about"
+                className="group mt-8 inline-flex items-center gap-3 rounded-full bg-rose-deep px-7 py-3.5 text-sm font-medium text-white shadow-lg shadow-rose-deep/20 transition hover:-translate-y-0.5 hover:bg-cocoa"
+              >
+                Meet the Baker
+                <span className="transition group-hover:translate-x-1">→</span>
+              </Link>
+            </Reveal>
           </div>
         </div>
+        <Wave className="text-cream" />
       </section>
 
       {/* CTA */}
       <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
-        <div className="rounded-[3rem] bg-[#5e3934] px-8 py-16 text-center text-[#fff8f1] sm:px-16">
-          <p className="mb-3 text-xs uppercase tracking-[0.3em] text-[#deb9b0]">
-            Have something in mind?
-          </p>
-
-          <h2
-            className={`${headingFont.className} mx-auto max-w-2xl text-5xl font-semibold leading-none sm:text-6xl`}
-          >
-            Let's make something special.
-          </h2>
-
-          <p className="mx-auto mt-6 max-w-xl leading-7 text-[#eddad5]">
-            Tell us what you're looking for, when you need it, and a little
-            about your celebration.
-          </p>
-
-          <Link
-            href="/order"
-            className="mt-8 inline-block rounded-full bg-[#fff8f1] px-7 py-3 text-sm font-medium text-[#5e3934] transition hover:bg-white"
-          >
-            Start Your Order
-          </Link>
-        </div>
+        <Reveal>
+          <div className="relative overflow-hidden rounded-[3rem] bg-cocoa px-8 py-16 text-center text-cream sm:px-16">
+            <div aria-hidden className="absolute -left-20 -top-24 h-72 w-72 animate-blob bg-rose-deep/40" />
+            <div
+              aria-hidden
+              className="absolute -bottom-28 -right-16 h-80 w-80 animate-blob bg-peach/20"
+              style={{ animationDelay: "-8s" }}
+            />
+            <div className="relative">
+              <p className="mb-3 text-xs uppercase tracking-[0.3em] text-peach">Have something in mind?</p>
+              <h2 className="mx-auto max-w-2xl font-display text-5xl font-semibold leading-none sm:text-6xl">
+                Let&apos;s make something{" "}
+                <span className="font-script font-normal text-peach">special.</span>
+              </h2>
+              <p className="mx-auto mt-6 max-w-xl leading-7 text-[#eddad5]">
+                Tell us what you&apos;re looking for, when you need it, and a little about your
+                celebration.
+              </p>
+              <Link
+                href="/order"
+                className="mt-9 inline-block rounded-full bg-cream px-8 py-3.5 text-sm font-medium text-cocoa transition hover:-translate-y-0.5 hover:bg-white hover:shadow-xl"
+              >
+                Start Your Order
+              </Link>
+            </div>
+          </div>
+        </Reveal>
       </section>
     </main>
   );
@@ -245,24 +190,22 @@ function Value({
   number,
   title,
   text,
+  delay,
 }: {
   number: string;
   title: string;
   text: string;
+  delay: number;
 }) {
   return (
-    <div className="flex gap-4">
-      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#f0d1ca] text-xs font-semibold text-[#8c5c54]">
+    <Reveal delay={delay} className="group flex gap-4">
+      <div className="flex h-14 w-14 shrink-0 animate-blob items-center justify-center bg-petal text-sm font-semibold text-rose-deep transition group-hover:bg-rose group-hover:text-white">
         {number}
       </div>
-
       <div>
-        <h3 className={`${headingFont.className} text-xl font-semibold`}>
-          {title}
-        </h3>
-
-        <p className="mt-1 text-sm leading-6 text-[#70514b]">{text}</p>
+        <h3 className="font-display text-xl font-semibold text-cocoa">{title}</h3>
+        <p className="mt-1 text-sm leading-6 text-latte">{text}</p>
       </div>
-    </div>
+    </Reveal>
   );
 }
