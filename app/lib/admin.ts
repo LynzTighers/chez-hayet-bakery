@@ -27,7 +27,18 @@ export type Contact = {
   status: "new" | "replied";
   repliedAt: string | null;
   createdAt: string;
+  replies: ContactReply[];
 };
+
+export type ContactReply = {
+  id: number;
+  contactId: number;
+  message: string;
+  sentAt: string;
+};
+
+// An API error with the server's own message (e.g. "Email sending isn't set up yet.").
+export class ApiError extends Error {}
 
 // Thrown when the API says the login has expired, so the page can send the baker
 // back to the login form.
@@ -39,7 +50,10 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     headers: { "Content-Type": "application/json", ...init?.headers },
   });
   if (res.status === 401) throw new LoggedOutError();
-  if (!res.ok) throw new Error(`Request failed (${res.status})`);
+  if (!res.ok) {
+    const body = await res.json().catch(() => null);
+    throw new ApiError(body?.fields?.message?.[0] ?? body?.error ?? `Request failed (${res.status})`);
+  }
   return res.json() as Promise<T>;
 }
 
@@ -50,6 +64,11 @@ export const adminApi = {
     request<Order>(`/api/admin/orders/${id}`, {
       method: "PATCH",
       body: JSON.stringify({ status }),
+    }),
+  replyToContact: (id: number, message: string) =>
+    request<ContactReply>(`/api/admin/contacts/${id}/reply`, {
+      method: "POST",
+      body: JSON.stringify({ message }),
     }),
 };
 

@@ -1,7 +1,15 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import { LoggedOutError, adminApi, todayString, type Contact, type Order, type OrderStatus } from "../lib/admin";
+import {
+  LoggedOutError,
+  adminApi,
+  todayString,
+  type Contact,
+  type ContactReply,
+  type Order,
+  type OrderStatus,
+} from "../lib/admin";
 import MessagesPanel from "./MessagesPanel";
 import OrdersPanel from "./OrdersPanel";
 
@@ -58,6 +66,17 @@ export default function AdminPage() {
       setOrders(previous);
       handleError(err);
     }
+  }
+
+  // A reply was emailed: show it under the message and mark the message as replied.
+  function addReply(contactId: number, reply: ContactReply) {
+    setContacts((rows) =>
+      rows.map((row) =>
+        row.id === contactId
+          ? { ...row, status: "replied", repliedAt: reply.sentAt, replies: [...row.replies, reply] }
+          : row,
+      ),
+    );
   }
 
   async function logout() {
@@ -130,7 +149,11 @@ export default function AdminPage() {
         {tab === "orders" ? (
           <OrdersPanel orders={orders} onStatusChange={changeStatus} />
         ) : (
-          <MessagesPanel contacts={contacts} />
+          <MessagesPanel
+            contacts={contacts}
+            onReplied={addReply}
+            onLoggedOut={() => router.replace("/admin/login")}
+          />
         )}
       </div>
     </div>
