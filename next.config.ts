@@ -7,6 +7,12 @@ import type { NextConfig } from "next";
 const apiUrl = process.env.API_URL ?? "http://localhost:4000";
 
 const nextConfig: NextConfig = {
+  experimental: {
+    // The build cache (on by default) reused stale Tailwind CSS on Vercel, so new
+    // classes added in components never reached the live site. Builds are small;
+    // always compile CSS fresh.
+    turbopackFileSystemCacheForBuild: false,
+  },
   async rewrites() {
     return [
       {
